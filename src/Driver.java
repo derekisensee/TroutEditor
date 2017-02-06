@@ -42,11 +42,11 @@ class Driver implements ActionListener/*, ItemListener*/ {
     }
 
     private void show() {
-        someText.setText("Hello Trout!");
+        //editBox.setText("Hello Trout!");
     }
 
     public void actionPerformed(ActionEvent e) {
-        e.getActionCommand();
+        editBox.setText(e.getActionCommand());
     }
 
     public static void main(String[] args) {
