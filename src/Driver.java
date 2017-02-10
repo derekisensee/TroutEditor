@@ -1,15 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
-class Driver implements ActionListener/*, ItemListener*/ {
+class Driver implements ActionListener {
     private JFrame mainFrame;
     private JLabel someText;
     private JEditorPane editBox;
     private JMenuBar menuBar;
     private JMenu menu;
     private JMenuItem save;
-
+    private JFileChooser fileChooser;
+    
     public Driver() {
         prepGUI();
     }
@@ -21,13 +23,12 @@ class Driver implements ActionListener/*, ItemListener*/ {
 
         someText = new JLabel("", JLabel.CENTER);
         editBox = new JEditorPane();
+	fileChooser = new JFileChooser();
         // menu stuff
         menuBar = new JMenuBar();
         menu = new JMenu("File");
         save = new JMenuItem("Save");
         menu.getAccessibleContext().setAccessibleDescription("File Stuff");
-
-        //menu stuff
         save.addActionListener(this);
         menu.add(save);
 
@@ -35,18 +36,31 @@ class Driver implements ActionListener/*, ItemListener*/ {
 
         // add everything to the frame
         mainFrame.setJMenuBar(menuBar);
-        //mainFrame.add(someText);
-        mainFrame.add(editBox);
-
+        mainFrame.add(editBox);	
+	mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
     }
 
-    private void show() {
-        //editBox.setText("Hello Trout!");
-    }
+    // private void show() { // can probably delete this.
+    //     //editBox.setText("Hello Trout!");
+    // }
 
     public void actionPerformed(ActionEvent e) {
-        editBox.setText(e.getActionCommand());
+	if (e.getActionCommand().equals("Save")) {
+	    String buffer = editBox.getText();
+	    
+	    int r = fileChooser.showSaveDialog(null);
+	    if (r == JFileChooser.APPROVE_OPTION) {
+		try {
+		    FileWriter f = new FileWriter(fileChooser.getSelectedFile());
+		    f.write(buffer);
+		    f.flush();
+		    f.close();
+		} catch(Exception a) {
+		    System.out.println(a.getMessage());
+		}
+	    }
+	}
     }
 
     public static void main(String[] args) {
