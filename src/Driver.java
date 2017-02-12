@@ -2,14 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Scanner;
 
 class Driver implements ActionListener {
     private JFrame mainFrame;
     private JLabel someText;
     private JEditorPane editBox;
+    
     private JMenuBar menuBar;
     private JMenu menu;
     private JMenuItem save;
+    private JMenuItem open;
+    
     private JFileChooser fileChooser;
     
     public Driver() {
@@ -28,10 +32,12 @@ class Driver implements ActionListener {
         menuBar = new JMenuBar();
         menu = new JMenu("File");
         save = new JMenuItem("Save");
+	open = new JMenuItem("Open");
         menu.getAccessibleContext().setAccessibleDescription("File Stuff");
         save.addActionListener(this);
-        menu.add(save);
-
+	open.addActionListener(this);
+        menu.add(save); menu.add(open);
+        
         menuBar.add(menu);
 
         // add everything to the frame
@@ -40,11 +46,7 @@ class Driver implements ActionListener {
 	mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
     }
-
-    // private void show() { // can probably delete this.
-    //     //editBox.setText("Hello Trout!");
-    // }
-
+    
     public void actionPerformed(ActionEvent e) {
 	if (e.getActionCommand().equals("Save")) {
 	    String buffer = editBox.getText();
@@ -61,10 +63,24 @@ class Driver implements ActionListener {
 		}
 	    }
 	}
+	if (e.getActionCommand().equals("Open")) {
+	    int r = fileChooser.showOpenDialog(null);
+	    if (r == JFileChooser.APPROVE_OPTION) {
+		File f = fileChooser.getSelectedFile();
+		try {
+		    Scanner in = new Scanner(f); // TODO: Make editBox the contents of whatever File we choose
+		    String fileText = "";
+		    while (in.hasNext()) {
+			fileText += in.nextLine() + "\n";
+		    }
+		    editBox.setText(fileText);
+		} catch (Exception ex) {
+		    System.out.println(ex.getMessage());
+		}
+	    }
+	}
     }
-
     public static void main(String[] args) {
         Driver d = new Driver();
-        //d.show();
     }
 }
