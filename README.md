@@ -7,4 +7,4 @@ If you're on Linux, you can simply "git clone https://github.com/falldj/TroutEdi
 
 To update, update the repository with "git pull", then run the buildJar.sh again.
 
-If you're on Windows, you can "javac *.java" in the src/ folder, then (from the root folder TroutEditor/) you can run "java src.Driver"
+If you're on Windows, you can "javac *.java" in the src/ folder, then (from the root folder TroutEditor/) you can run "java src.Driver" // change this if the .jar works fine.
